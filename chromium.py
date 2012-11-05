@@ -1,6 +1,6 @@
 #! /usr/local/bin/python3
 # ------------------------------------------------------
-# |   Mighty Chromium Installer and Updater rel 1.0    |
+# |   Mighty Chromium Installer and Updater rel 1.1    |
 # ------------------------------------------------------
 # | This Mighty Python Script downloads and  installs  |
 # | or updates lastest Chromium build snapshot for OSX |
@@ -9,7 +9,8 @@
 # |            <umutkarci@std.sehir.edu.tr>            |
 # ------------------------------------------------------
 
-import shutil, urllib.request, zipfile, re, os, math, time, sys
+import shutil, urllib.request, zipfile, re, os, math, threading, time, sys
+from threading import Thread
 LAST=str(urllib.request.urlopen("https://commondatastorage.googleapis.com/chromium-browser-snapshots/Mac/LAST_CHANGE").read())[2:-1]
 ZIP=("https://commondatastorage.googleapis.com/chromium-browser-snapshots/Mac/"+LAST+"/chrome-mac.zip")
 ZIP_LOCAL=("/tmp/chrome-mac.zip")
@@ -17,6 +18,18 @@ BIN_LOCAL=("/tmp/chrome-mac/Chromium.app")
 APP_DIR=("/Applications/")
 BIN_APP=(APP_DIR+"Chromium.app")
 PLIST_LOCAL=(BIN_APP+"/Contents/Info.plist")
+def func1():
+	if os.path.isfile(ZIP_LOCAL):
+		os.remove(ZIP_LOCAL)
+	SIZE_LOCAL = 0
+	while SIZE > SIZE_LOCAL:
+		if os.path.isfile(ZIP_LOCAL):
+			SIZE_LOCAL = math.floor((int(os.stat(ZIP_LOCAL).st_size)/1024**2))
+			sys.stdout.write("Downloaded File: %d MB   \r" % (SIZE_LOCAL) )
+		else:
+			sys.stdout.write("Downloaded File: %d MB  \r" % (0) )
+def func2():
+	urllib.request.urlretrieve (ZIP, ZIP_LOCAL)
 if os.path.isfile(PLIST_LOCAL):
 	INFO_PLIST=open(PLIST_LOCAL, "r").read()
 	VER=str(re.findall("(?<=<string>)(\d{6})(?=</string>)", INFO_PLIST))[2:-2]
@@ -29,7 +42,8 @@ if int(LAST) > int(VER):
 	SIZE = math.floor(int(urllib.request.urlopen(ZIP).info().get('Content-Length'))/1024**2)
 	print("Downloading")
 	print("Total Size: ", SIZE, "MB")
-	urllib.request.urlretrieve (ZIP, ZIP_LOCAL)
+	Thread(target = func1).start()
+	func2()
 	sys.stdout.write("\n")
 	print("Extracting")
 	zipfile.ZipFile(ZIP_LOCAL).extractall("/tmp/")
