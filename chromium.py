@@ -1,6 +1,6 @@
 #! /usr/local/bin/python3
 # ------------------------------------------------------
-# |   Mighty Chromium Installer and Updater rel 1.2    |
+# |   Mighty Chromium Installer and Updater rel 1.3    |
 # ------------------------------------------------------
 # | This Mighty Python Script downloads and  installs  |
 # | or updates lastest Chromium build snapshot for OSX |
@@ -53,17 +53,22 @@ def f_cleaner():
 	os.remove(ZIP_LOCAL)
 
 def t_sizeprinter():
-	SIZE = math.floor(int(urllib.request.urlopen(ZIP).info().get('Content-Length'))/1024**2)
-	print("Total Size: ", SIZE, "MB")
+	SIZE = math.floor(int(urllib.request.urlopen(ZIP).info().get('Content-Length')))
+	print("Total Size: ", math.floor(SIZE/1024**2), "MB")
 	if os.path.isfile(ZIP_LOCAL):
 		os.remove(ZIP_LOCAL)
 	SIZE_LOCAL = 0
-	while SIZE > SIZE_LOCAL:
+	while int(SIZE) > int(SIZE_LOCAL):
 		if os.path.isfile(ZIP_LOCAL):
-			SIZE_LOCAL = math.floor((int(os.stat(ZIP_LOCAL).st_size)/1024**2))
-			sys.stdout.write("Downloaded File: %d MB   \r" % (SIZE_LOCAL) )
+			SIZE_LOCAL = math.floor(int(os.stat(ZIP_LOCAL).st_size))
+			SIZE_LOCAL_PERCENT = str((SIZE_LOCAL*100)/SIZE)[:4]
+			if math.floor(SIZE_LOCAL/1024**2) < 10:
+				SIZE_LOCAL = "0"+str(math.floor(SIZE_LOCAL/1024**2))
+			else:
+				SIZE_LOCAL = str(math.floor(SIZE_LOCAL/1024**2))
+			sys.stdout.write("Percent: %s %%  %s MB  \r" % (SIZE_LOCAL_PERCENT, SIZE_LOCAL))
 		else:
-			sys.stdout.write("Downloaded File: %d MB  \r" % (0) )
+			sys.stdout.write("Percent: %s %%  %s MB  \r" % ("0.00", "00"))
 
 if os.path.isfile(PLIST_LOCAL):
 	INFO_PLIST=open(PLIST_LOCAL, "r").read()
