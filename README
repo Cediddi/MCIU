@@ -1,0 +1,18 @@
+README
+------------------------------------------------------
+|   Mighty Chromium Installer and Updater  Readme    |
+------------------------------------------------------
+| This Mighty Python Script downloads and installs   |
+| or updates lastest Chromium build snapshot for OSX |
+------------------------------------------------------
+|     For the lastest Stable Release of Python3      |
+|     http://python.org/download/releases/3.3.0/     |
+------------------------------------------------------
+| In order to use this script, you need to give      |
+| executable permissions with chmod. Also you can    |
+| execute it manually. (eg. "$ Python chromium.py")  |
+------------------------------------------------------
+|           Copyright (c)  2012 Umut Karcı           |
+|            <umutkarci@std.sehir.edu.tr>            |
+------------------------------------------------------
+
