@@ -57,8 +57,8 @@ def t_sizeprinter():
 	print("Total Size: ", math.floor(SIZE/1024**2), "MB")
 	if os.path.isfile(ZIP_LOCAL):
 		os.remove(ZIP_LOCAL)
-	SIZE_LOCAL = 0
-	while int(SIZE) > int(SIZE_LOCAL):
+	SIZE_LOCAL_PERCENT = "0.00"
+	while SIZE_LOCAL_PERCENT != "100.":
 		if os.path.isfile(ZIP_LOCAL):
 			SIZE_LOCAL = math.floor(int(os.stat(ZIP_LOCAL).st_size))
 			SIZE_LOCAL_PERCENT = str((SIZE_LOCAL*100)/SIZE)[:4]
