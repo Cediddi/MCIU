@@ -31,6 +31,8 @@ def f_extracter():
 	zipfile.ZipFile(ZIP_LOCAL).extractall("/tmp/")
 
 def f_installer():
+	os.system("killall -9 Chromium");
+	time.sleep(3)
 	if os.path.isfile(PLIST_LOCAL):
 		print("Installing")
 		shutil.rmtree(BIN_APP)
