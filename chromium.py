@@ -5,12 +5,12 @@
 # | This Mighty Python Script downloads and  installs  |
 # | or updates lastest Chromium build snapshot for OSX |
 # ------------------------------------------------------
-# |           Copyright (c)  2012 Umut Karcı           |
+# |           Copyright (c)  2012 Umut Karci           |
 # |            <umutkarci@std.sehir.edu.tr>            |
 # ------------------------------------------------------
 
 import shutil
-import urllib.request
+from urllib import request
 import zipfile
 import re
 import os
@@ -19,7 +19,7 @@ import sys
 from threading import Thread
 
 
-LAST = str(urllib.request.urlopen(
+LAST = str(request.urlopen(
     "https://commondatastorage.googleapis.com/chromium-browser-snapshots/Mac/LAST_CHANGE").read())[2:-1]
 ZIP = ("https://commondatastorage.googleapis.com/chromium-browser-snapshots/Mac/" + LAST + "/chrome-mac.zip")
 ZIP_LOCAL = ("/tmp/chrome-mac.zip")
@@ -32,7 +32,7 @@ PLIST_LOCAL = (BIN_APP + "/Contents/Info.plist")
 def f_downloader():
     print("Downloading")
     Thread(target=t_sizeprinter).start()
-    urllib.request.urlretrieve(ZIP, ZIP_LOCAL)
+    request.urlretrieve(ZIP, ZIP_LOCAL)
     sys.stdout.write("\n")
 
 
@@ -67,7 +67,7 @@ def f_cleaner():
 
 
 def t_sizeprinter():
-    SIZE = math.floor(int(urllib.request.urlopen(ZIP).info().get('Content-Length')))
+    SIZE = math.floor(int(request.urlopen(ZIP).info().get('Content-Length')))
     print("Total Size: ", math.floor(SIZE / 1024 ** 2), "MB")
     if os.path.isfile(ZIP_LOCAL):
         os.remove(ZIP_LOCAL)
